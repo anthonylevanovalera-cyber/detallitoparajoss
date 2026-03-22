@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <audio id="musica" src="musica.mp3" loop preload="auto"></audio>
+    <audio id="musica" src="musica.mp3" preload="auto" loop></audio>
 
     <script>
         const canvas = document.getElementById('flowerCanvas');
@@ -108,8 +108,15 @@ Atte: Genek.`;
         btn.onclick = function() {
             btn.style.display = 'none';
             
-            // Intento de audio que no bloquea el resto del código
-            audio.play().catch(e => console.log("Audio bloqueado por el navegador"));
+            // Forzar el inicio del audio con reintento
+            audio.muted = false; 
+            audio.play().then(() => {
+                console.log("Reproduciendo música...");
+            }).catch(e => {
+                console.log("Error de audio: ", e);
+                // Intento extra
+                audio.play();
+            });
 
             for(let i=0; i<5; i++) {
                 setTimeout(() => {
