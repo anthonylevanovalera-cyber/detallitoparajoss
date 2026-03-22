@@ -19,17 +19,16 @@
         }
         .boton-iniciar { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; font-size: 1.2rem; background-color: #ffeb3b; border: none; border-radius: 50px; cursor: pointer; z-index: 10; font-family: 'Dancing Script', cursive; box-shadow: 0 0 20px rgba(255,235,59,0.5); }
         
-        /* AJUSTE PARA QUE EL TEXTO NO SE CORTE */
         .pergamino-contenedor { 
             width: 85%; 
             max-width: 600px; 
-            max-height: 80vh; /* Altura máxima del 80% de la pantalla */
-            overflow-y: auto; /* Permite bajar si el texto es largo */
-            display: block; /* Cambiado de flex para permitir el scroll */
+            max-height: 80vh;
+            overflow-y: auto;
+            display: block;
             padding: 30px;
-            scrollbar-width: none; /* Esconde la barra en Firefox */
+            scrollbar-width: none;
         }
-        .pergamino-contenedor::-webkit-scrollbar { display: none; } /* Esconde la barra en Chrome/Safari */
+        .pergamino-contenedor::-webkit-scrollbar { display: none; }
 
         .texto-carta { 
             font-family: 'Dancing Script', cursive; 
@@ -52,7 +51,7 @@
 
     <div id="escena1">
         <button class="boton-iniciar" id="btnPlay">Toca aquí para tu sorpresa ✨</button>
-        <div id="frase-sol">Tus ojitos marrones son como el mismo sol...</div>
+        <div id="frase-sol">Tus ojitos marrones son como el mismo sol Joselyn...</div>
         <div class="flecha-continuar" id="flecha">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ffeb3b" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
             <p style="color: #ffeb3b; font-family: 'Dancing Script'; margin: 0;">Haz clic aquí para leer</p>
@@ -66,7 +65,7 @@
         </div>
     </div>
 
-    <audio id="musica" src="musica.mp3?v=1.7" loop preload="auto"></audio>
+    <audio id="musica" src="musica.mp3?v=1.8" loop preload="auto"></audio>
 
     <script>
         const canvas = document.getElementById('flowerCanvas');
@@ -105,6 +104,12 @@ Atte: Genek.`;
                 ctx.translate(this.x, canvas.height);
                 ctx.scale(this.growth, this.growth);
                 
+                // --- AJUSTE: Contorno Brillante ---
+                // Agregamos una sombra brillante para el contorno de toda la flor
+                ctx.shadowColor = "rgba(255, 235, 59, 0.7)"; // Color amarillo brillante
+                ctx.shadowBlur = 15; // Intensidad del brillo
+                // ------------------------------------
+
                 ctx.strokeStyle = "#2e7d32";
                 ctx.lineWidth = 6;
                 ctx.beginPath();
@@ -120,8 +125,22 @@ Atte: Genek.`;
                 for(let i=0; i<12; i++) {
                     ctx.rotate(Math.PI/6);
                     ctx.fillStyle = "#fdd835";
+                    
+                    // --- AJUSTE: Contorno Brillante en los Pétalos ---
+                    // Aplicamos la misma sombra brillante individualmente a cada pétalo
+                    ctx.shadowColor = "rgba(255, 235, 59, 0.7)";
+                    ctx.shadowBlur = 10;
+                    // --------------------------------------------------
+
                     ctx.beginPath(); ctx.ellipse(0, 25, 10, 25, 0, 0, Math.PI*2); ctx.fill();
                 }
+
+                // --- AJUSTE: Desactivar sombra para el centro ---
+                // Desactivamos la sombra antes de dibujar el centro marrón
+                ctx.shadowColor = 'transparent';
+                ctx.shadowBlur = 0;
+                // --------------------------------------------------
+
                 ctx.fillStyle = "#3e2723";
                 ctx.beginPath(); ctx.arc(0, 0, 18, 0, Math.PI*2); ctx.fill();
                 
@@ -172,7 +191,6 @@ Atte: Genek.`;
                     contenidoCarta.innerHTML += char === '\n' ? '<br>' : char;
                     i++;
                     
-                    // Auto-scroll hacia abajo mientras se escribe
                     const contenedor = document.querySelector('.pergamino-contenedor');
                     contenedor.scrollTop = contenedor.scrollHeight;
 
