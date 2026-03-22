@@ -18,8 +18,25 @@
             justify-content: center; 
         }
         .boton-iniciar { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); padding: 15px 30px; font-size: 1.2rem; background-color: #ffeb3b; border: none; border-radius: 50px; cursor: pointer; z-index: 10; font-family: 'Dancing Script', cursive; box-shadow: 0 0 20px rgba(255,235,59,0.5); }
-        .pergamino-contenedor { width: 80%; max-width: 600px; padding: 40px; text-align: center; color: #3d2b1f; }
-        .texto-carta { font-family: 'Dancing Script', cursive; font-size: 1.6rem; line-height: 1.6; white-space: pre-wrap; opacity: 0; transition: opacity 2s; }
+        .pergamino-contenedor { 
+            width: 85%; 
+            max-width: 600px; 
+            height: 85%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .texto-carta { 
+            font-family: 'Dancing Script', cursive; 
+            font-size: 1.2rem; 
+            line-height: 1.5; 
+            white-space: pre-wrap; 
+            opacity: 0; 
+            transition: opacity 2s; 
+            color: #3d2b1f;
+            text-align: center;
+        }
         #flowerCanvas { width: 100%; height: 100%; }
         .flecha-continuar { display: none; position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); cursor: pointer; text-align: center; z-index: 15; }
         #frase-sol { position: absolute; top: 15%; width: 100%; text-align: center; color: #ffeb3b; font-family: 'Dancing Script', cursive; font-size: 1.8rem; opacity: 0; transition: opacity 2s; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); }
@@ -32,7 +49,7 @@
         <div id="frase-sol">Tus ojitos marrones son como el mismo sol...</div>
         <div class="flecha-continuar" id="flecha">
             <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#ffeb3b" stroke-width="2"><path d="M7 13l5 5 5-5M7 6l5 5 5-5"/></svg>
-            <p style="color: #ffeb3b; font-family: 'Dancing Script';">Haz clic aquí para leer</p>
+            <p style="color: #ffeb3b; font-family: 'Dancing Script'; margin: 0;">Haz clic aquí para leer</p>
         </div>
         <canvas id="flowerCanvas"></canvas>
     </div>
@@ -43,7 +60,7 @@
         </div>
     </div>
 
-    <audio id="musica" src="musica.mp3?v=1.3" loop preload="auto"></audio>
+    <audio id="musica" src="musica.mp3?v=1.5" loop preload="auto"></audio>
 
     <script>
         const canvas = document.getElementById('flowerCanvas');
@@ -59,30 +76,30 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        const textoDedicatoria = `Joselyn, desde el día que te conocí fue algo magnífico. Me encanta tu sonrisa... 
+        // TEXTO CORREGIDO ORTOGRÁFICAMENTE
+        const textoDedicatoria = `Joselyn, desde el día que te conocí fue algo magnífico. Me encanta tu sonrisa, tus ojos, la manera en la que piensas y, genuinamente, todo tu ser.
 
-El camino es largo y es tedioso, pero quiero que sepas que estoy dispuesto a recorrer todo ese camino para llegar a ti. 
+El camino es largo y es tedioso, pero quiero que sepas que estoy dispuesto a recorrer todo ese camino para llegar a tener algo lindo contigo.
 
-Estaré dispuesto a caminar a tu lado, y si caemos, nos levantamos; de ello se trata: apoyarnos y crecer juntos.
+Eres una persona especial para mí y lo reconozco: caí rendido ante ti. Bajé mi espada y mi escudo para poder abrazarte y abrirme hacia ti. Estaré dispuesto a caminar a tu lado y, si caemos, nos levantamos; de ello se trata: apoyarnos y crecer juntos.
+
+Eres el sol que ilumina los días y la luna que alumbra el camino de noche. Cada día me doy cuenta de lo afortunado que soy al tenerte en mi vida. Gracias por ser esa persona especial que me motiva, por compartir tus días conmigo y hacerme increíblemente feliz.
 
 Te quiero, Joselyn R.R. ♥
 
 Atte: Genek.`;
 
         class Flower {
-            constructor(x, y, size) {
+            constructor(x) {
                 this.x = x;
-                this.y = y;
-                this.size = size;
                 this.growth = 0;
             }
             draw() {
                 if(this.growth < 1) this.growth += 0.007;
                 ctx.save();
-                ctx.translate(this.x, canvas.height); // Dibujar desde el suelo
+                ctx.translate(this.x, canvas.height);
                 ctx.scale(this.growth, this.growth);
                 
-                // Dibujar Tallo
                 ctx.strokeStyle = "#2e7d32";
                 ctx.lineWidth = 6;
                 ctx.beginPath();
@@ -90,14 +107,10 @@ Atte: Genek.`;
                 ctx.quadraticCurveTo(10, -canvas.height*0.2, 0, -canvas.height*0.45);
                 ctx.stroke();
 
-                // Dibujar Hojas
                 ctx.fillStyle = "#2e7d32";
-                // Hoja izquierda
                 ctx.beginPath(); ctx.ellipse(-10, -canvas.height*0.15, 10, 25, Math.PI/4, 0, Math.PI*2); ctx.fill();
-                // Hoja derecha
                 ctx.beginPath(); ctx.ellipse(10, -canvas.height*0.25, 10, 25, -Math.PI/4, 0, Math.PI*2); ctx.fill();
 
-                // Dibujar Cabeza del Girasol
                 ctx.translate(0, -canvas.height*0.45);
                 for(let i=0; i<12; i++) {
                     ctx.rotate(Math.PI/6);
@@ -120,23 +133,13 @@ Atte: Genek.`;
 
         btn.onclick = function() {
             btn.style.display = 'none';
-            
-            // 1. Despertar el audio con carga forzada
-            audio.load(); 
-            audio.play().then(() => {
-                console.log("Música sonando");
-            }).catch(() => {
-                // Si falla por bloqueo del navegador, lo intenta en modo seguro
-                audio.muted = false;
-                audio.play();
-            });
-
+            audio.load();
+            audio.play().catch(() => { audio.muted = false; audio.play(); });
             fraseSol.style.opacity = '1';
 
-            // 2. Animación de los girasoles (Manteniendo tus tallos)
             for(let i=0; i<5; i++) {
                 setTimeout(() => {
-                    flowers.push(new Flower((canvas.width/6)*(i+1), canvas.height*0.55, 30));
+                    flowers.push(new Flower((canvas.width/6)*(i+1)));
                     if(i === 4) setTimeout(() => { flecha.style.display = 'block'; }, 5000);
                 }, i * 1500); 
             }
@@ -156,13 +159,13 @@ Atte: Genek.`;
         };
 
         function escribirCarta() {
-            contenidoCarta.style.opacity = '1';
             let i = 0;
             function escribir() {
                 if (i < textoDedicatoria.length) {
-                    contenidoCarta.innerHTML += textoDedicatoria.charAt(i) === '\n' ? '<br>' : textoDedicatoria.charAt(i);
+                    let char = textoDedicatoria.charAt(i);
+                    contenidoCarta.innerHTML += char === '\n' ? '<br>' : char;
                     i++;
-                    setTimeout(escribir, 60);
+                    setTimeout(escribir, 45); // Un poquito más rápido para que no se canse de esperar
                 }
             }
             escribir();
