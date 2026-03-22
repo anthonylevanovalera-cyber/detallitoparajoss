@@ -60,7 +60,7 @@
         </div>
     </div>
 
-    <audio id="musica" src="musica.mp3?v=1.5" loop preload="auto"></audio>
+    <audio id="musica" src="musica.mp3?v=1.6" loop preload="auto"></audio>
 
     <script>
         const canvas = document.getElementById('flowerCanvas');
@@ -76,7 +76,6 @@
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
-        // TEXTO CORREGIDO ORTOGRÁFICAMENTE
         const textoDedicatoria = `Joselyn, desde el día que te conocí fue algo magnífico. Me encanta tu sonrisa, tus ojos, la manera en la que piensas y, genuinamente, todo tu ser.
 
 El camino es largo y es tedioso, pero quiero que sepas que estoy dispuesto a recorrer todo ese camino para llegar a tener algo lindo contigo.
@@ -95,7 +94,8 @@ Atte: Genek.`;
                 this.growth = 0;
             }
             draw() {
-                if(this.growth < 1) this.growth += 0.007;
+                // VELOCIDAD DE CRECIMIENTO: Cambiado de 0.007 a 0.004 (más lento)
+                if(this.growth < 1) this.growth += 0.004;
                 ctx.save();
                 ctx.translate(this.x, canvas.height);
                 ctx.scale(this.growth, this.growth);
@@ -138,10 +138,12 @@ Atte: Genek.`;
             fraseSol.style.opacity = '1';
 
             for(let i=0; i<5; i++) {
+                // TIEMPO ENTRE FLORES: Cambiado de 1500 a 2200 (más espacio entre cada una)
                 setTimeout(() => {
                     flowers.push(new Flower((canvas.width/6)*(i+1)));
-                    if(i === 4) setTimeout(() => { flecha.style.display = 'block'; }, 5000);
-                }, i * 1500); 
+                    // La flecha sale un poquito después para dar tiempo a ver la última flor
+                    if(i === 4) setTimeout(() => { flecha.style.display = 'block'; }, 6000);
+                }, i * 2200); 
             }
             animate();
         };
@@ -165,7 +167,7 @@ Atte: Genek.`;
                     let char = textoDedicatoria.charAt(i);
                     contenidoCarta.innerHTML += char === '\n' ? '<br>' : char;
                     i++;
-                    setTimeout(escribir, 45); // Un poquito más rápido para que no se canse de esperar
+                    setTimeout(escribir, 45);
                 }
             }
             escribir();
